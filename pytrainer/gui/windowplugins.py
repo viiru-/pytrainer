@@ -17,8 +17,8 @@
 #Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from SimpleGladeApp import SimpleBuilderApp
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import os
 
 class WindowPlugins(SimpleBuilderApp):
@@ -31,9 +31,9 @@ class WindowPlugins(SimpleBuilderApp):
 
     def setList(self, list):
         iterOne = False
-        store = gtk.ListStore(
-                gobject.TYPE_STRING,
-                gobject.TYPE_STRING
+        store = Gtk.ListStore(
+                GObject.TYPE_STRING,
+                GObject.TYPE_STRING
                 )
         for i in list:
             iter = store.append()
@@ -51,7 +51,7 @@ class WindowPlugins(SimpleBuilderApp):
     def create_treeview(self,treeview,column_names):
         i=0
         for column_index, column_name in enumerate(column_names):
-            column = gtk.TreeViewColumn(column_name, gtk.CellRendererText(), text=column_index)
+            column = Gtk.TreeViewColumn(column_name, Gtk.CellRendererText(), text=column_index)
             if i==0:
                 column.set_visible(False)
             treeview.append_column(column)
@@ -72,23 +72,23 @@ class WindowPlugins(SimpleBuilderApp):
         name,description,status = self.parent.getPluginInfo(selected.get_value(iter,0))
         prefs = self.parent.getPluginConfParams(selected.get_value(iter,0))
 
-        self.prefwindow = gtk.Window()
+        self.prefwindow = Gtk.Window()
         self.prefwindow.set_border_width(20)
         self.prefwindow.set_title(_("%s settings" %name))
 
-        table = gtk.Table(1,2)
+        table = Gtk.Table(1,2)
         i=0
         self.entryList = []
         for pref in prefs:
-            label = gtk.Label("<b>%s</b>"%pref[0])
+            label = Gtk.Label(label="<b>%s</b>"%pref[0])
             label.set_use_markup(True)
             if pref[0] != "status":
-                entry = gtk.Entry()
+                entry = Gtk.Entry()
                 entry.set_text(pref[1])
                 self.entryList.append(entry)
                 table.attach(entry,1,2,i,i+1)
             else:
-                combobox = gtk.combo_box_new_text()
+                combobox = Gtk.ComboBoxText()
                 combobox.append_text(_("Disable"))
                 combobox.append_text(_("Enable"))
                 combobox.set_active(int(pref[1]))
@@ -97,7 +97,7 @@ class WindowPlugins(SimpleBuilderApp):
             table.attach(label,0,1,i,i+1)
             i+=1
 
-        button = gtk.Button(_("Ok"))
+        button = Gtk.Button(_("Ok"))
         button.connect("clicked", self.on_acceptSettings_clicked, None)
         table.attach(button,0,2,i,i+1)
         self.prefwindow.add(table)
