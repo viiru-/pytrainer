@@ -146,7 +146,7 @@ class garmintools_full():
 				with open(filename, 'r') as f:
 					xmlString = f.read()
 				# Double check encoding from dump files. ASCII?
-				# http://docs.python.org/library/stringio.html#module-cStringIO
+				# http://docs.python.org/library/strinGio.html#module-cStringIO
 				fileString = StringIO.StringIO("<root>"+xmlString+"</root>")
 				#parse string as xml
 				try:

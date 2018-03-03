@@ -32,7 +32,7 @@ class DrawArea:
         #self.axis = self.figure.add_subplot(111)
         self.vbox = vbox
         self.window = window
-        #self.canvas = FigureCanvasGTK(self.figure) # a gtk.DrawingArea
+        #self.canvas = FigureCanvasGTK(self.figure) # a Gtk.DrawingArea
         #self.drawDefault()
         self.NEARLY_ZERO = 0.0000000000000000000001
         logging.debug('<<')
@@ -137,7 +137,7 @@ class DrawArea:
         logging.debug("Setting x limits")
         axis.set_xlim(0, numCols)
         
-        canvas = FigureCanvasGTK(figure) # a gtk.DrawingArea
+        canvas = FigureCanvasGTK(figure) # a Gtk.DrawingArea
         logging.debug("Got canvas: %s" % (str(canvas)))
         canvas.show()
         logging.debug("Adding canvas to vbox")
@@ -297,7 +297,7 @@ class DrawArea:
         axis.table(cellText=cellText, cellLoc='center', rowLabels=rowLabels, colLabels=colLabels, loc='bottom')
         plt.subplots_adjust(left=0.15,bottom=0.08+(0.03*numRows))
         axis.grid(True)
-        canvas = FigureCanvasGTK(figure) # a gtk.DrawingArea
+        canvas = FigureCanvasGTK(figure) # a Gtk.DrawingArea
         canvas.show()
         self.vbox.pack_start(canvas, True, True)
         #toolbar = NavigationToolbar(canvas, self.window)
@@ -373,7 +373,7 @@ class DrawArea:
                 ylim_max = ylimits[1]
             axis.set_ylim(ylim_min, ylim_max)
 
-        canvas = FigureCanvasGTK(figure) # a gtk.DrawingArea
+        canvas = FigureCanvasGTK(figure) # a Gtk.DrawingArea
         logging.debug("Canvas: %s" % str(canvas))
         canvas.show()
         self.vbox.pack_start(canvas, True, True)
@@ -469,7 +469,7 @@ class DrawArea:
             explode.insert(0, 0)
         axis.pie(fracs, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True)
 
-        canvas = FigureCanvasGTK(figure) # a gtk.DrawingArea
+        canvas = FigureCanvasGTK(figure) # a Gtk.DrawingArea
         canvas.show()
 
         for child in self.vbox.get_children():
@@ -486,7 +486,7 @@ class DrawArea:
         self.axis.set_title('An Empty Graph')
         self.axis.grid(True)
         self.canvas.destroy()
-        self.canvas = FigureCanvasGTK(self.figure) # a gtk.DrawingArea
+        self.canvas = FigureCanvasGTK(self.figure) # a Gtk.DrawingArea
         self.canvas.show()
         self.vbox.pack_start(self.canvas, True, True)
         logging.debug('<<')
