@@ -20,6 +20,8 @@ from __future__ import division
 import os
 import logging
 import traceback
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
 from SimpleGladeApp import SimpleBuilderApp
 from windowcalendar import WindowCalendar
