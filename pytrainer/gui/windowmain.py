@@ -78,7 +78,7 @@ class Main(SimpleBuilderApp):
         self.y1_linewidth = 1
         # setup Search ListView
         self.listsearch = ListSearch(sport_service, self, self.pytrainer_main)
-        
+
         self.aboutwindow = None
         self.mapviewer = None
         self.mapviewer_fs = None
@@ -139,7 +139,7 @@ class Main(SimpleBuilderApp):
         self.create_treeview(self.statsTreeView,columns)
 
         #create the columns for the laps treeview
-        columns=[ 
+        columns=[
                     {'name':_("Lap")},
                     {'name':_("Trigger"), 'xalign':0, 'pixbuf':True},
                     {'name':_("Distance"), 'xalign':1.0, 'format_float':'%.2f', 'quantity':'distance'},
@@ -155,18 +155,18 @@ class Main(SimpleBuilderApp):
                     {'name':_("Comments"), 'xalign':0.0},
                 ]
         self.create_treeview(self.lapsTreeView,columns)
-        
+
         #create the columns for the projected times treeview
-        columns=[ 
+        columns=[
                     {'name':_("id"), 'visible':False},
                     {'name':_("Race"), 'xalign':1.0},
                     {'name':_("Distance"), 'xalign':1.0, 'format_float':'%.2f', 'quantity':'distance'},
                     {'name':_("Time"), 'xalign':1.0, 'format_duration':True},
                 ]
         self.create_treeview(self.analyticsTreeView,columns,sortable=False)
-        
+
         #create the columns for the rank treeview
-        columns=[ 
+        columns=[
                     {'name':_("id"), 'visible':False},
                     {'name':_("Rank"), 'visible':True},
                     {'name':_("Date"), 'xalign':1.0},
@@ -177,7 +177,7 @@ class Main(SimpleBuilderApp):
                     {'name':_("Color"), 'visible':False},
                 ]
         self.create_treeview(self.rankingTreeView,columns,sortable=False)
-        
+
         self.fileconf = self.pytrainer_main.profile.confdir+"/listviewmenu.xml"
         if not os.path.isfile(self.fileconf):
             self._createXmlListView(self.fileconf)
@@ -322,7 +322,7 @@ class Main(SimpleBuilderApp):
             if hours>23:
                 new = "%d %s %02d:%s" % (hours / 24, days, hours%24 ,new[-5:])
         cell.set_property('text', new)
-        
+
     def render_float(self, column, cell, model, iter, data):
         _format, _quantity, _idx = data
         _val = model.get_value(iter, _idx)
@@ -419,7 +419,7 @@ class Main(SimpleBuilderApp):
             self.record_title.set_text(activity.title)
             hrun,mrun,srun = second2time(activity.duration)
             hpause,mpause,spause = second2time(activity.time_pause)
-            self.record_runrest.set_text("%02d:%02d:%02d / %02d:%02d:%02d" %(hrun,mrun,srun,hpause,mpause,spause)) 
+            self.record_runrest.set_text("%02d:%02d:%02d / %02d:%02d:%02d" %(hrun,mrun,srun,hpause,mpause,spause))
             buffer = self.record_comments.get_buffer()
             start,end = buffer.get_bounds()
             buffer.set_text(activity.comments)
@@ -427,7 +427,7 @@ class Main(SimpleBuilderApp):
                 equipment_text = ", ".join(map(lambda(item): item.description, activity.equipment))
                 self.label_record_equipment.set_text(equipment_text)
             else:
-                self.label_record_equipment.set_markup("<i>None</i>")    
+                self.label_record_equipment.set_markup("<i>None</i>")
             if len(activity.Laps)>1:
                 store = Gtk.ListStore(
                     GObject.TYPE_INT,
@@ -447,9 +447,9 @@ class Main(SimpleBuilderApp):
                 for lap in activity.Laps:
                     t = lap.duration
                     m = lap.distance
-                    
+
                     m = self.uc.speed(m)
-                    
+
                     s = m / float(t) * 3.6
                     max_speed = lap.max_speed * 3.6
                     if s > 0:
@@ -461,25 +461,25 @@ class Main(SimpleBuilderApp):
                     else:
                         pace = "0:00"
                         max_pace = "0:00"
-                        
+
                     color = {
                         'active' : '#000000',
                         'rest' : '#808080',
                         'resting' : '#808080',
                     }
-                    
+
                     pic = GdkPixbuf.Pixbuf.new_from_file(self.data_path+"glade/trigger_%s.png" % lap.laptrigger)
-                        
+
                     iter = store.append()
-                    store.set(iter, 
+                    store.set(iter,
                         0, lap.lap_number + 1,
-                        1, pic, 
-                        2, m/1000, 
-                        3, str(int(float(t))), 
-                        4, s, 
-                        5, max_speed, 
-                        6, pace, 
-                        7, max_pace, 
+                        1, pic,
+                        2, m/1000,
+                        3, str(int(float(t))),
+                        4, s,
+                        5, max_speed,
+                        6, pace,
+                        7, max_pace,
                         8, lap.avg_hr if lap.avg_hr else 0,
                         9, lap.max_hr if lap.max_hr else 0,
                         10, lap.calories,
@@ -488,7 +488,7 @@ class Main(SimpleBuilderApp):
                         )
                 self.lapsTreeView.set_model(store)
                 self.lapsTreeView.set_rules_hint(True)
-                
+
                 # Use grey color for "rest" laps
                 for c in self.lapsTreeView.get_columns():
                     for cr in c.get_cells():
@@ -499,7 +499,7 @@ class Main(SimpleBuilderApp):
                     liststore[path][12] = new_text
                     activity.Laps[int(path)].comments = new_text
                     self.pytrainer_main.ddbb.session.commit()
-                    
+
                 def show_tooltip(widget, x, y, keyboard_mode, tooltip, user_param1):
                      path = self.lapsTreeView.get_path_at_pos(x,y-20)
                      if not path: return False
@@ -532,7 +532,7 @@ class Main(SimpleBuilderApp):
         else:
             self.recordview.set_current_page(0)
             self.recordview.set_sensitive(0)
-   
+
         logging.debug("<<")
 
     def actualize_recordgraph(self,activity):
@@ -744,8 +744,8 @@ class Main(SimpleBuilderApp):
                 if y2min is not None and y2max is not None:
                     y2minlabel.set_text(str(y2min))
                     y2maxlabel.set_text(str(y2max))
-                
-                
+
+
                 #Default to showing options
                 self.buttonGraphShowOptions.hide()
                 self.scrolledwindowGraphOptions.show()
@@ -802,14 +802,14 @@ class Main(SimpleBuilderApp):
         #else:
         #   self.recordview.set_sensitive(0)
         logging.debug("<<")
-        
+
     def actualize_analytics(self,activity):
         logging.debug(">>")
         record_list = activity.tracks
-            
+
         def project(d,a):
             return int(a.duration * (d / a.distance)**1.06)
-            
+
         DISTANCES = {
             .8    : _("800 m"),
             1.5   : _("1500 m"),
@@ -820,7 +820,7 @@ class Main(SimpleBuilderApp):
             42.195  : _("Marathon"),
             100   : _("100K"),
         }
-        
+
         projected_store = Gtk.ListStore(
             GObject.TYPE_STRING,       #id
             GObject.TYPE_STRING,    #name
@@ -836,26 +836,26 @@ class Main(SimpleBuilderApp):
             projected_store.set (
                 iter,
                 0, str(d),
-                1, v,         
+                1, v,
                 2, str(d),
                 3, str(project(d, activity)),
                 )
         self.analyticsTreeView.set_model(projected_store)
-            
+
         self.analytics_activity = activity
         self.on_change_rank_percentage()
 
         logging.debug("<<")
 
     def on_change_rank_percentage(self, widget=None):
-    
+
         activity = self.analytics_activity
         if widget:
             percentage = widget.get_value() / 100
         else:
             percentage = .05
         records = self.pytrainer_main.ddbb.session.query(Activity).filter(and_(Activity.distance.between(activity.distance * (1-percentage), activity.distance * (1+percentage)), Activity.sport == activity.sport)).all()
-        
+
         count = 1
         for r in records:
             if r.average > activity.average:
@@ -887,7 +887,7 @@ class Main(SimpleBuilderApp):
             rec_set.append(r)
         if length>1 and count!=length:
             rec_set.append(-1)
-            
+
         for i in rec_set:
             r = records[i]
             iter = rank_store.append()
@@ -903,12 +903,12 @@ class Main(SimpleBuilderApp):
                 6, r.pace,
                 7, '#3AA142' if rank==count else '#000000',
             )
-            
+
             for c in self.rankingTreeView.get_columns()[:-1]:
                 for cr in c.get_cells():
                     if type(cr)==Gtk.CellRendererText:
                         c.add_attribute(cr, 'foreground', 7)
-            
+
         self.rankingTreeView.set_model(rank_store)
 
     def actualize_dayview(self, date):
@@ -1116,7 +1116,7 @@ class Main(SimpleBuilderApp):
             history_store.set (
                 iter,
                 0, (data['id_athletestat']),
-                1, date,         
+                1, date,
                 2, weight,
                 3, (data['bodyfat']),
                 4, (data['restinghr']),
@@ -1132,9 +1132,9 @@ class Main(SimpleBuilderApp):
         self.labelTotalDuration.set_text(str(stats.data['total_duration'] / 3600) + " hours")
         self.labelStartDate.set_text(stats.data['start_date'].strftime('%Y-%m-%d'))
         self.labelEndDate.set_text(stats.data['end_date'].strftime('%Y-%m-%d'))
-        
+
         data = self.parent.stats.data
-        
+
         store = Gtk.ListStore(
             GObject.TYPE_INT,
             GObject.TYPE_STRING,
@@ -1150,7 +1150,7 @@ class Main(SimpleBuilderApp):
             )
         for s in data['sports'].values():
             iter = store.append()
-            
+
             c = 0
             store.set (iter, c, c)
             c += 1
@@ -1169,13 +1169,13 @@ class Main(SimpleBuilderApp):
 
         self.statsTreeView.set_model(store)
         self.statsTreeView.set_rules_hint(True)
-        
+
         store.set_sort_column_id(3, Gtk.SortType.DESCENDING)
 
         self.drawareatotal.drawgraph(record_list)
 
-        logging.debug("<<")    
-    
+        logging.debug("<<")
+
     def actualize_listview(self,record_list):
         logging.debug(">>")
         #recod list tiene:
@@ -1339,7 +1339,7 @@ class Main(SimpleBuilderApp):
         self.listsearch.duration = self.lsa_duration.get_active()
         self.listsearch.distance = self.lsa_distance.get_active()
         self.parent.refreshListView(self.listsearch.condition)
-        
+
     def on_listareareset_clicked(self, widget):
         self.listsearch.reset_lsa()
         self.parent.refreshListView(self.listsearch.condition)
@@ -1443,7 +1443,7 @@ class Main(SimpleBuilderApp):
         else:
             activity.show_laps = False
         self.actualize_recordgraph(activity)
-        
+
     def on_gridchange(self, widget, axis=None, activity=None):
         '''Handler for record graph grid selection changes'''
         if axis == 'y1':
@@ -1820,9 +1820,9 @@ class Main(SimpleBuilderApp):
                 self.parent.refreshGraphView("record")
         logging.debug("<<")
         return False
-        
+
     def on_allRecordTreeView_button_press(self, treeview, event):
-        ''' Handler for clicks on listview list 
+        ''' Handler for clicks on listview list
             event.button = mouse button pressed (i.e. 1 = left, 3 = right)
         '''
         logging.debug(">>")
@@ -1899,7 +1899,7 @@ class Main(SimpleBuilderApp):
         self.recordTreeView.set_model(store)
         if iterOne:
             self.recordTreeView.get_selection().select_iter(iterOne)
-        logging.debug("<<")        
+        logging.debug("<<")
 
     def parseFloat(self,string):
         try:
@@ -2002,7 +2002,7 @@ class Main(SimpleBuilderApp):
                 restingHR = selected.get_value(iter,4)
                 maxHR = selected.get_value(iter,5)
                 self.update_athlete_item(idx, date, weight, bf, restingHR, maxHR)'''
-        
+
     def on_athleteTreeView_edit(self, widget, data):
         logging.debug('>>')
         if data is None:
@@ -2020,7 +2020,7 @@ class Main(SimpleBuilderApp):
         dialog.set_modal(False)
         #Get Content area of dialog
         vbox = dialog.get_content_area()
-        
+
         #Build data display
         table = Gtk.Table(1,2)
         self.entryList = []
@@ -2035,11 +2035,11 @@ class Main(SimpleBuilderApp):
         cal.set_from_stock(Gtk.STOCK_INDEX, Gtk.IconSize.BUTTON)
         calbut = Gtk.Button()
         calbut.add(cal)
-        calbut.connect("clicked", self.on_athletecalendar_clicked) 
+        calbut.connect("clicked", self.on_athletecalendar_clicked)
         table.attach(label,0,1,0,1)
         table.attach(entry,1,2,0,1)
         #table.attach(calbut,2,3,0,1) #TODO
-        
+
         #Add weight
         label = Gtk.Label(label=_("<b>Weight</b>"))
         label.set_use_markup(True)
@@ -2072,7 +2072,7 @@ class Main(SimpleBuilderApp):
         self.entryList.append(entry)
         table.attach(label,0,1,4,5)
         table.attach(entry,1,2,4,5)
-        
+
         vbox.add(table)
         vbox.show_all()
         response = dialog.run()
@@ -2089,7 +2089,7 @@ class Main(SimpleBuilderApp):
         dialog.destroy()
         logging.debug('<<')
 
-    
+
     def on_athleteTreeView_delete(self, widget, data):
         '''User has opted to delete entry'''
         logging.debug(">>")
