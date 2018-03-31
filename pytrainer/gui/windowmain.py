@@ -1986,8 +1986,6 @@ class Main(SimpleBuilderApp):
                 popup.attach(menuitem, 0, 1, 3, 4)
                 popup.show_all()
                 popup.popup( None, None, None, event.button, time)
-                #self.popup.show(selected.get_value(iter,0), event.button, time)
-                #self.popup.popup( None, None, None, event_button, time)
             else:
                 #Left mouse - so display this row
                 pass
