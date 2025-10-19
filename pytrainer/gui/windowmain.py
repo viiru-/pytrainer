@@ -257,7 +257,7 @@ class Main(SimpleBuilderApp):
 
     def createGraphs(self):
         logging.debug(">>")
-        self.drawarearecord = RecordGraph(self.record_graph_vbox, self.window1, self.record_combovalue, self.record_combovalue2, self.btnShowLaps, self.tableConfigY1, pytrainer_main=self.pytrainer_main)
+        self.drawarearecord = RecordGraph(self.record_graph_vbox, self.window1, pytrainer_main=self.pytrainer_main)
         self.drawareaheartrate = HeartRateGraph([self.heartrate_vbox, self.heartrate_vbox2, self.heartrate_vbox3], self.window1, pytrainer_main=self.pytrainer_main)
         self.day_vbox.hide()
         sports = self._sport_service.get_all_sports()
@@ -550,8 +550,6 @@ class Main(SimpleBuilderApp):
         self.record_list = activity.tracks
         self.laps = activity.laps
         if activity.gpx_file is not None:
-            #Hide current drop down boxes
-            self.hbox30.hide()
             self.graph_data_hbox.hide()
             #Enable graph
             self.record_vbox.set_sensitive(1)
@@ -745,8 +743,6 @@ class Main(SimpleBuilderApp):
                 self.buttonGraphHideOptions.show()
         else:
             logging.debug("Activity has no GPX data")
-            #Show drop down boxes
-            self.hbox30.show()
             #Hide new graph details
             self.graph_data_hbox.hide()
             self.hboxGraphOptions.hide()
@@ -1572,18 +1568,6 @@ class Main(SimpleBuilderApp):
         #print event # resize event
         self.size = self.window1.get_size()
 
-    def on_buttonShowOptions_clicked(self, widget):
-        position_set = self.hpaned1.get_property('position-set')
-        if position_set:
-            #Currently not showing options - show them
-            self.hpaned1.set_property('position-set', False)
-            self.buttonShowOptions.set_tooltip_text(_('Hide graph display options') )
-        else:
-            #Hide options
-            self.hpaned1.set_position(0)
-            self.buttonShowOptions.set_tooltip_text(_('Show graph display options') )
-        logging.debug('Position set: %s', self.hpaned1.get_property('position-set'))
-
     def on_buttonGraphHideOptions_clicked(self, widget):
         logging.debug('on_buttonGraphHideOptions_clicked')
         self.buttonGraphHideOptions.hide()
@@ -1617,39 +1601,6 @@ class Main(SimpleBuilderApp):
     def on_comboMapLineType_changed(self, widget):
         logging.debug('on_comboMapLineType_changed %s = %s', widget.get_name(), widget.get_active())
         self.parent.refreshMapView()
-
-    def on_hpaned1_move_handle(self, widget):
-        logging.debug("Handler %s", widget)
-
-    def on_spinbuttonY1_value_changed(self, widget):
-        y1min = self.spinbuttonY1Min.get_value()
-        y1max = self.spinbuttonY1Max.get_value()
-        #Check to see if the min and max have the same...
-        if y1min == y1max:
-            if widget.get_name() == "spinbuttonY1Min": #User was changing the min spinbutton, so move max up
-                y1max += 1
-            else:   #Move min down
-                y1min -= 1
-        self.y1_limits=(y1min, y1max)
-        self.zoom_graph(y1limits=self.y1_limits, y1color=self.y1_color, y1_linewidth=self.y1_linewidth)
-
-    def on_buttonResetGraph_clicked(self, widget):
-        #self.zoom_graph()
-        #Reset stored values
-        self.y1_limits = None
-        self.y1_color = None
-        self.y1_linewidth = 1
-        self.zoom_graph()
-
-    def on_colorbuttonY1LineColor_color_set(self, widget):
-        y1color = widget.get_color()
-        cs = y1color.to_string()
-        self.y1_color = cs[0:3] + cs[5:7] + cs[9:11]
-        self.drawarearecord.drawgraph(self.record_list,self.laps, y1limits=self.y1_limits, y1color=self.y1_color, y1_linewidth=self.y1_linewidth)
-
-    def on_spinbuttonY1LineWeight_value_changed(self, widget):
-        self.y1_linewidth = self.spinbuttonY1LineWeight.get_value_as_int()
-        self.drawarearecord.drawgraph(self.record_list,self.laps, y1limits=self.y1_limits, y1color=self.y1_color, y1_linewidth=self.y1_linewidth)
 
     def on_edit_clicked(self,widget):
         selected,iter = self.recordTreeView.get_selection().get_selected()
@@ -1727,10 +1678,6 @@ class Main(SimpleBuilderApp):
     def on_hidemap_clicked(self,widget):
         self.maparea.hide()
         self.infoarea.show()
-
-    def on_btnShowLaps_toggled(self,widget):
-        logging.debug("--")
-        self.parent.refreshGraphView(self.selected_view)
 
     def on_day_combovalue_changed(self,widget):
         logging.debug("--")
